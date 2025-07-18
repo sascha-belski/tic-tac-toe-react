@@ -11,6 +11,8 @@ This is a simple implementation of the classic Tic-Tac-Toe game using React, Vit
 
 ## Getting Started
 ```bash
+git clone https://github.com/sascha-belski/tic-tac-toe-react.git
+cd tic-tac-toe-react
 npm install
 npm run dev
 ```
