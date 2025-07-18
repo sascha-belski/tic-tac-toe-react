@@ -40,3 +40,55 @@
 .read-the-docs {
   color: #888;
 }
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  grid-template-rows: repeat(3, 60px);
+  gap: 5px;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.board-row {
+  display: flex;
+}
+
+.square {
+  width: 60px;
+  height: 60px;
+  margin: 4px;
+  font-size: 24px;
+  font-weight: bold;
+  background-color: #f9f9f9;
+  border: 1px solid #000;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  /* Center content inside the button */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.square:hover {
+  background-color: #eaeaea;
+}
+
+.restart-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ddd;
+  border: 1px solid #aaa;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.restart-button:hover {
+  background-color: #ccc;
+}
