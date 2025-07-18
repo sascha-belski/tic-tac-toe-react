@@ -3,9 +3,75 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+interface SquareProps {
+  value: string | null;
+  onClick: () => void;
+}
 
+function Square({ value, onClick }: SquareProps) {
+  return (
+    <button className="square" onClick={onClick}>
+      {value}
+    </button>
+  );
+}
+function Board() {
+  const [squares, setSquares] = useState<(string | null)[]>(Array(9).fill(null));
+  const [xIsNext, setXIsNext] = useState<boolean>(true);
+
+  function handleClick(i: number): void {
+    if (calculateWinner(squares) || squares[i]) return;
+    const newSquares = squares.slice();
+    newSquares[i] = xIsNext ? 'X' : 'O';
+    setSquares(newSquares);
+    setXIsNext(!xIsNext);
+  }
+
+  function handleRestart() {
+    setSquares(Array(9).fill(null)); // Remet le plateau à zéro
+    setXIsNext(true); // Remet le prochain joueur à X
+  }
+
+  const winner = calculateWinner(squares);
+  const status = winner ? `Winner: ${winner}` : `Next player: ${xIsNext ? 'X' : 'O'}`;
+
+  return (
+    <>
+      <div className="status">{status}</div>
+      {[0, 1, 2].map(row => (
+        <div className="board-row" key={row}>
+          {[0, 1, 2].map(col => {
+            const index = row * 3 + col;
+            return (
+              <Square
+                key={index}
+                value={squares[index]}
+                onClick={() => handleClick(index)}
+              />
+            );
+          })}
+        </div>
+      ))}
+      <button className="restart-button" onClick={handleRestart}>Restart</button>
+    </>
+  );
+}
+
+function calculateWinner(squares: (string | null)[]): string | null {
+  const lines: number[][] = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6],
+  ];
+  for (const [a, b, c] of lines) {
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
+
+function App() {
   return (
     <>
       <div>
@@ -17,19 +83,12 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className="game">
+        <Board />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h3>tic toc toe game</h3>
     </>
-  )
+  );
 }
 
 export default App
