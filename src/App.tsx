@@ -5,16 +5,18 @@ import './App.css'
 
 interface SquareProps {
   value: string | null;
+  className: string | null;
   onClick: () => void;
 }
 
-function Square({ value, onClick }: SquareProps) {
+function Square({ value, className, onClick }: SquareProps) {
   return (
-    <button className="square" onClick={onClick}>
+    <button className={`square ${className ?? ''}`} onClick={onClick}>
       {value}
     </button>
   );
 }
+
 function Board() {
   const [squares, setSquares] = useState<(string | null)[]>(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState<boolean>(true);
@@ -28,11 +30,11 @@ function Board() {
   }
 
   function handleRestart() {
-    setSquares(Array(9).fill(null)); // Remet le plateau à zéro
-    setXIsNext(true); // Remet le prochain joueur à X
+    setSquares(Array(9).fill(null));
+    setXIsNext(true);
   }
 
-  const winner = calculateWinner(squares);
+  const [winner, winningLine]: [string | null, number[]] = calculateWinner(squares) ?? [null, []];
   const status = winner ? `Winner: ${winner}` : `Next player: ${xIsNext ? 'X' : 'O'}`;
 
   return (
@@ -42,10 +44,12 @@ function Board() {
         <div className="board-row" key={row}>
           {[0, 1, 2].map(col => {
             const index = row * 3 + col;
+            const isWinningSquare = winningLine.includes(index);
             return (
               <Square
                 key={index}
                 value={squares[index]}
+                className={isWinningSquare ? 'win' : ''}
                 onClick={() => handleClick(index)}
               />
             );
@@ -57,7 +61,7 @@ function Board() {
   );
 }
 
-function calculateWinner(squares: (string | null)[]): string | null {
+function calculateWinner(squares: (string | null)[]): [string, number[]] | null  {
   const lines: number[][] = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8],
     [0, 3, 6], [1, 4, 7], [2, 5, 8],
@@ -65,7 +69,7 @@ function calculateWinner(squares: (string | null)[]): string | null {
   ];
   for (const [a, b, c] of lines) {
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return [squares[a], [a, b, c]];
     }
   }
   return null;

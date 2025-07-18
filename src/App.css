@@ -92,3 +92,7 @@
 .restart-button:hover {
   background-color: #ccc;
 }
+
+.win {
+  background-color: #aaa;
+}
