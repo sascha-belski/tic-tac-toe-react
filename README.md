@@ -2,6 +2,11 @@
 
 This is a simple implementation of the classic Tic-Tac-Toe game using React, Vite, and TypeScript.
 
+## Live Demo
+
+Check out the live demo here:
+👉 [https://sascha-belski.github.io/tic-tac-toe-react/](https://sascha-belski.github.io/tic-tac-toe-react/)
+
 ## Features
 - Functional components with hooks (`useState`)
 - Game logic for win conditions
